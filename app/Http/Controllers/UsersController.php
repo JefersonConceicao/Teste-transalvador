@@ -7,12 +7,16 @@ use App\User;
 
 class UsersController extends Controller
 {
-    public function index(){
+    public static function index(){
         $user = new User;
-
         $data = $user->all();
+        
         return view('users.index', [
             'dataUsers' => $data
         ]);
+    }
+
+    public function create(){
+        return view('users.create');
     }
 }

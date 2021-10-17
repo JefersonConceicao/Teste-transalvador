@@ -1,11 +1,10 @@
 @extends('layout.master')
-
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading"> 
             <div class="panel-title"> 
                 <h1> Usuários 
-                    <button class="btn btn-default pull-right"> Novo </button>    
+                    <a href="/usuarios/create" class="btn btn-default pull-right"> Novo </a>    
                 </h1> 
             </div>
         </div>
