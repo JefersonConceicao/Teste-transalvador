@@ -11,3 +11,11 @@
   width: 90px;
 }
 
+.control-error {
+  border-color: red;
+}
+
+.required-label {
+  color: red;
+}
+

@@ -4,7 +4,7 @@
         <div class="panel-heading"> 
             <div class="panel-title"> 
                 <h1> Usuários 
-                    <a href="/usuarios/create" class="btn btn-default pull-right"> Novo </a>    
+                    <button id="addUsuario" class="btn btn-default pull-right"> Novo </a>    
                 </h1> 
             </div>
         </div>
