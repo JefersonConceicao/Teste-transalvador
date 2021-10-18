@@ -6,7 +6,7 @@ window.Swal = require('sweetalert2');
 window.Usage = require('./Utils/Usage');
 
 //PAGES
-window.Usuarios = require('./Pages/Usuarios');
+window.Usuarios = require('./Pages/Home');
 
 $.ajaxSetup({
     headers:{

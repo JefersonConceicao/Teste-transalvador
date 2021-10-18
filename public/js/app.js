@@ -22563,10 +22563,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Usuarios.js":
-/*!****************************************!*\
-  !*** ./resources/js/Pages/Usuarios.js ***!
-  \****************************************/
+/***/ "./resources/js/Pages/Home.js":
+/*!************************************!*\
+  !*** ./resources/js/Pages/Home.js ***!
+  \************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22575,7 +22575,7 @@ var _require = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert
 
 var loadEventos = function loadEventos() {
   $("#addUsuario").on("click", function () {
-    var url = '/usuarios/create';
+    var url = '/empresa/create';
     Usage.loadModal(url, function () {
       $("#addUsuario").on("submit", function (e) {
         e.preventDefault();
@@ -22587,9 +22587,8 @@ var loadEventos = function loadEventos() {
 
 var setFormUser = function setFormUser(id) {
   var form = typeof id === "undefined" ? "#addUsuario" : "#editUsuario";
-  var url = typeof id === "undefined" ? "/usuarios/store" : "/usuarios/update/".concat(id);
+  var url = typeof id === "undefined" ? "/empresa/store" : "/empresa/update/".concat(id);
   var type = typeof id === "undefined" ? "POST" : "PUT";
-  console.log($(form).serialize());
   $.ajax({
     type: type,
     url: url,
@@ -22681,7 +22680,7 @@ window.Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2
 
 window.Usage = __webpack_require__(/*! ./Utils/Usage */ "./resources/js/Utils/Usage.js"); //PAGES
 
-window.Usuarios = __webpack_require__(/*! ./Pages/Usuarios */ "./resources/js/Pages/Usuarios.js");
+window.Usuarios = __webpack_require__(/*! ./Pages/Home */ "./resources/js/Pages/Home.js");
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
@@ -22740,8 +22739,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\teste_transalvador\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\teste_transalvador\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\alexandrefs\Desktop\Teste-transalvador-master\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\alexandrefs\Desktop\Teste-transalvador-master\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -2,7 +2,7 @@ const { default: Swal } = require("sweetalert2");
 
 const loadEventos = () => {
     $("#addUsuario").on("click", function(){
-        const url = '/usuarios/create';
+        const url = '/empresa/create';
 
         Usage.loadModal(url, function(){
             $("#addUsuario").on("submit", function(e){
@@ -15,11 +15,9 @@ const loadEventos = () => {
 
 const setFormUser = id => {
     const form = typeof id === "undefined" ? "#addUsuario" : "#editUsuario";
-    const url =  typeof id === "undefined" ? "/usuarios/store" : `/usuarios/update/${id}`;
+    const url =  typeof id === "undefined" ? "/empresa/store" : `/empresa/update/${id}`;
     const type = typeof id === "undefined" ? "POST" : "PUT";
     
-    console.log($(form).serialize());
-
     $.ajax({
         type,
         url,

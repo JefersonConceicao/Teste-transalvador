@@ -1,8 +1,9 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'usuarios'], function(){
-    Route::GET('/', 'UsersController@index')->name('users.index');
-    Route::GET('/create', 'UsersController@create')->name('users.create');
-    Route::POST('/store', 'UsersController@store')->name('users.store');
+Route::GET('/', 'EmpresaController@index')->name('empresa.index');
+
+Route::group(['prefix' => 'empresa'], function(){
+    Route::GET('/create', 'EmpresaController@create')->name('users.create');
+    Route::POST('/store', 'EmpresaController@store')->name('users.store');
 });
