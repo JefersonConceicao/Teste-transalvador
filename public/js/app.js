@@ -22563,31 +22563,122 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/Pages/Home.js":
-/*!************************************!*\
-  !*** ./resources/js/Pages/Home.js ***!
-  \************************************/
+/***/ "./resources/js/Pages/Documentos.js":
+/*!******************************************!*\
+  !*** ./resources/js/Pages/Documentos.js ***!
+  \******************************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var _require = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js"),
-    Swal = _require["default"];
+var modalObject = "#myModal";
+var grid = "#gridDocumentos";
+
+var loadEventos = function loadEventos() {
+  $("#addDocumento").on("click", function () {
+    var url = '/documentos/create';
+    Usage.loadModal(url, function () {
+      $("#addDocumentos").on("submit", function (e) {
+        e.preventDefault();
+        setFormDocumentos();
+      });
+    });
+  });
+  $("#filterDocumentos").on("submit", function (e) {
+    e.preventDefault();
+    renderGridDocumentos();
+  });
+};
+
+var setFormDocumentos = function setFormDocumentos(id) {
+  var form = typeof id === "undefined" ? "#addDocumentos" : "#editDocumentos";
+  var url = typeof id === "undefined" ? "/documentos/store" : "/documentos/update/".concat(id);
+  var type = typeof id === "undefined" ? "POST" : "PUT";
+  $.ajax({
+    type: type,
+    url: url,
+    data: new FormData($("#addDocumentos")[0]),
+    dataType: "JSON",
+    processData: false,
+    contentType: false,
+    beforeSend: function beforeSend() {
+      $("#btnSubmit").prop("disabled", true).html("Carregando....");
+    },
+    success: function success(response) {
+      Swal.fire({
+        icon: !response.error ? 'success' : 'error',
+        title: response.msg,
+        toast: true,
+        position: 'top-end',
+        timer: 4000,
+        showConfirmButton: false
+      });
+      $(modalObject).modal('hide');
+      renderGridDocumentos();
+    },
+    error: function error(jqXHR, textStatus, _error) {
+      var errors = jqXHR.responseJSON.errors;
+      Usage.showMessagesValidator(form, errors);
+    },
+    complete: function complete() {
+      $("#btnSubmit").prop("disabled", false).html("Salvar");
+    }
+  });
+};
+
+var renderGridDocumentos = function renderGridDocumentos() {
+  var url = '/documentos/';
+  var formFilter = "#filterDocumentos";
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: $(formFilter).serialize(),
+    dataType: "HTML",
+    beforeSend: function beforeSend() {
+      $(grid).closest(grid);
+    },
+    success: function success(response) {
+      $(grid).html($(response).find("".concat(grid, " >")));
+      habilitaBotoes();
+    }
+  });
+};
+
+$(function () {
+  loadEventos();
+});
+
+/***/ }),
+
+/***/ "./resources/js/Pages/Empresas.js":
+/*!****************************************!*\
+  !*** ./resources/js/Pages/Empresas.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var modalObject = "#myModal";
+var grid = "#gridEmpresas";
 
 var loadEventos = function loadEventos() {
   $("#addUsuario").on("click", function () {
-    var url = '/empresa/create';
+    var url = '/empresas/create';
     Usage.loadModal(url, function () {
       $("#addUsuario").on("submit", function (e) {
         e.preventDefault();
         setFormUser();
       });
+      settingForm();
     });
+  });
+  $("#filterEmpresas").on("submit", function (e) {
+    e.preventDefault();
+    renderGridEmpresas();
   });
 };
 
 var setFormUser = function setFormUser(id) {
   var form = typeof id === "undefined" ? "#addUsuario" : "#editUsuario";
-  var url = typeof id === "undefined" ? "/empresa/store" : "/empresa/update/".concat(id);
+  var url = typeof id === "undefined" ? "/empresas/store" : "/empresas/update/".concat(id);
   var type = typeof id === "undefined" ? "POST" : "PUT";
   $.ajax({
     type: type,
@@ -22606,6 +22697,8 @@ var setFormUser = function setFormUser(id) {
         timer: 4000,
         showConfirmButton: false
       });
+      $(modalObject).modal('hide');
+      renderGridEmpresas();
     },
     error: function error(jqXHR, textStatus, _error) {
       var errors = jqXHR.responseJSON.errors;
@@ -22617,8 +22710,141 @@ var setFormUser = function setFormUser(id) {
   });
 };
 
+var settingForm = function settingForm() {
+  $("#valCEP").on("change", function () {
+    $.get("/enderecos/getDataByCEP/".concat($(this).val()), function (response, textStatus, jqXHR) {
+      $("input[name='log_nom_logradouro']").val(response.logradouro);
+      $("input[name='bai_nom_bairro']").val(response.bairro);
+    }, "JSON");
+    $.get("/enderecos/getLocationByCEP/".concat($(this).val()), function (response, textStauts, jqXHR) {
+      $("input[name='end_num_lat']").val(!!response.location.lat ? response.location.lat : "1111");
+      $("input[name='end_num_long']").val(!!response.location.lng ? response.location.lng : "1111");
+    });
+  });
+};
+
+var renderGridEmpresas = function renderGridEmpresas() {
+  var url = '/empresas/';
+  var formFilter = "#filterEmpresas";
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: $(formFilter).serialize(),
+    dataType: "HTML",
+    beforeSend: function beforeSend() {
+      $(grid).closest(grid);
+    },
+    success: function success(response) {
+      $(grid).html($(response).find("".concat(grid, " >")));
+    }
+  });
+};
+
 $(function () {
   loadEventos();
+});
+
+/***/ }),
+
+/***/ "./resources/js/Pages/TipoDocumento.js":
+/*!*********************************************!*\
+  !*** ./resources/js/Pages/TipoDocumento.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var modalObject = "#myModal";
+var grid = "#gridTiposDocumento";
+
+var loadEventos = function loadEventos() {
+  $("#addTipoDocumento").on("click", function () {
+    var url = '/documentosTipos/create';
+    Usage.loadModal(url, function () {
+      $("#addDocumentosTipos").on("submit", function (e) {
+        e.preventDefault();
+        setFormTiposDocumentos();
+      });
+    });
+  });
+};
+
+var habilitaBotoes = function habilitaBotoes() {
+  $(".deleteTipoDocumento").on("click", function () {
+    var url = '/documentosTipos/delete/' + $(this).attr("id");
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      dataType: "JSON",
+      success: function success(response) {
+        Swal.fire({
+          icon: !response.error ? 'success' : 'error',
+          title: response.msg,
+          toast: true,
+          position: 'top-end',
+          timer: 4000,
+          showConfirmButton: false
+        });
+        renderGridEmpresas();
+      }
+    });
+  });
+};
+
+var setFormTiposDocumentos = function setFormTiposDocumentos(id) {
+  var form = typeof id === "undefined" ? "#addDocumentosTipos" : "#editDocumentosTipos";
+  var url = typeof id === "undefined" ? "/documentosTipos/store" : "/documentosTipos/update/".concat(id);
+  var type = typeof id === "undefined" ? "POST" : "PUT";
+  $.ajax({
+    type: type,
+    url: url,
+    data: $(form).serialize(),
+    dataType: "JSON",
+    beforeSend: function beforeSend() {
+      $("#btnSubmit").prop("disabled", true).html("Carregando....");
+    },
+    success: function success(response) {
+      Swal.fire({
+        icon: !response.error ? 'success' : 'error',
+        title: response.msg,
+        toast: true,
+        position: 'top-end',
+        timer: 4000,
+        showConfirmButton: false
+      });
+      $(modalObject).modal('hide');
+      renderGridEmpresas();
+    },
+    error: function error(jqXHR, textStatus, _error) {
+      var errors = jqXHR.responseJSON.errors;
+      Usage.showMessagesValidator(form, errors);
+    },
+    complete: function complete() {
+      $("#btnSubmit").prop("disabled", false).html("Salvar");
+    }
+  });
+};
+
+var renderGridEmpresas = function renderGridEmpresas() {
+  var url = '/documentosTipos/';
+  var formFilter = "#filterTiposDocumentos";
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: $(formFilter).serialize(),
+    dataType: "HTML",
+    beforeSend: function beforeSend() {
+      $(grid).closest(grid);
+    },
+    success: function success(response) {
+      $(grid).html($(response).find("".concat(grid, " >")));
+      habilitaBotoes();
+    }
+  });
+};
+
+$(function () {
+  loadEventos();
+  habilitaBotoes();
 });
 
 /***/ }),
@@ -22629,6 +22855,20 @@ $(function () {
   \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
+
+var setActive = function setActive() {
+  //REMOVE LINKS COM ACTIVE 
+  $(".navbar-nav").find("li").removeClass("active"); //COMPARA O PATHNAME (LINK ATUAL) COM O HREF DOS LINKS
+
+  var elementLink = $(".navbar-nav").find("a");
+  elementLink.each(function (index, element) {
+    var anchorage = $(element);
+
+    if (anchorage.attr("href") == window.location.pathname) {
+      anchorage.parent().addClass("active");
+    }
+  });
+};
 
 var loadModal = function loadModal(url) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -22659,6 +22899,9 @@ var showMessagesValidator = function showMessagesValidator(form, errors) {
   });
 };
 
+$(function () {
+  setActive();
+});
 module.exports = {
   loadModal: loadModal,
   showMessagesValidator: showMessagesValidator
@@ -22680,7 +22923,9 @@ window.Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2
 
 window.Usage = __webpack_require__(/*! ./Utils/Usage */ "./resources/js/Utils/Usage.js"); //PAGES
 
-window.Usuarios = __webpack_require__(/*! ./Pages/Home */ "./resources/js/Pages/Home.js");
+window.Empresas = __webpack_require__(/*! ./Pages/Empresas */ "./resources/js/Pages/Empresas.js");
+window.Documentos = __webpack_require__(/*! ./Pages/Documentos */ "./resources/js/Pages/Documentos.js");
+window.TipoDocumento = __webpack_require__(/*! ./Pages/TipoDocumento */ "./resources/js/Pages/TipoDocumento.js");
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
@@ -22739,8 +22984,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\alexandrefs\Desktop\Teste-transalvador-master\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\alexandrefs\Desktop\Teste-transalvador-master\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\teste_transalvador\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\teste_transalvador\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -5,11 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Route;
 
-class FormularioRequest extends FormRequest
+class TiposDocumentosRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
      * @return bool
      */
     public function authorize()
@@ -18,8 +16,6 @@ class FormularioRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array
      */
     public function rules()
@@ -27,14 +23,16 @@ class FormularioRequest extends FormRequest
         $currentRoute = explode('.', Route::currentRouteName());
 
         switch(end($currentRoute)){
-            case 'store':
-                return [
-                    'emp_nom_empresa' => 'required',
-                ];
+            case 'store': 
+            return [
+                'tdo_nome_tipo_documento' => 'required'
+            ];
         }
+    }
 
+    public function messages(){
         return [
-            //
+            'required' => 'Campo obrigatório',
         ];
     }
 }

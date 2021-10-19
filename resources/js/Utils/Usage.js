@@ -1,3 +1,18 @@
+const setActive = () => {
+    //REMOVE LINKS COM ACTIVE 
+    $(".navbar-nav").find("li").removeClass("active");
+
+    //COMPARA O PATHNAME (LINK ATUAL) COM O HREF DOS LINKS
+    const elementLink = $(".navbar-nav").find("a");
+    elementLink.each((index, element) => {
+        const anchorage = $(element)
+
+        if(anchorage.attr("href") == window.location.pathname){
+            anchorage.parent().addClass("active");
+        }
+    })
+}
+
 const loadModal = (url, callback = null) => {
     const modalObject = $("#myModal");
 
@@ -25,6 +40,10 @@ const showMessagesValidator = (form, errors) => {
         elementInput.addClass('control-error');
     }); 
 }
+
+$(() => {
+    setActive()
+})
 
 module.exports = {
     loadModal,

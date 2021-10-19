@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="token" content="{{csrf_token()}}"> 
-    <title> BOOTSTRAP 3 LARAVEL SQL SERVER </title>
+    <title> Transalvador | Avaliação  </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
         crossorigin="anonymous"
@@ -50,10 +50,9 @@
                 </div>
                 <div class="collapse navbar-collapse" id="menu-mobile">
                     <ul class="nav navbar-nav"> 
-                        <li class="active"> <a href="/usuarios/" > Usuários </a> </li>
-                        <li> <a href="#"> Cidades </a> </li>
-                        <li> <a href="#"> Setores </a> </li>
-                        <li> <a href="#"> Opções </a> </li>
+                        <li> <a href="/empresas/"> Empresas </a> </li>
+                        <li> <a href="/documentos/"> Documentos </a> </li>
+                        <li> <a href="/documentosTipos/"> Tipos de Documentos </a> </li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +61,6 @@
         @yield('content')
         {{-- END CONTENT PAGE --}}
     </div>
-
     <script
         src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
